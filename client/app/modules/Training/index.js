@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 // Loading Modules
 import SentenceClassification from './Components/InitialClassification';
 import EntityClassificationTool from './Components/EntityTool';
@@ -15,20 +14,9 @@ class ChartContainer extends React.Component {
         return (
             <Container>
                 <Header> CIB ChatBot Training </Header>
-                <Tabs>
-                    <TabList>
-                        <Tab>Training</Tab>
-                        <Tab>History</Tab>
-                    </TabList>
-                    <TabPanel>
-                        <SentenceClass> <SentenceClassification sentenceInFocus={this.props.Chat.sentenceInFocus} /> </SentenceClass>
-                        <AdditionalClassInfo> <IntentClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.intentUpdating} intents={this.props.Chat.intents} updateIntent={this.props.updateIntents}/> </AdditionalClassInfo>
-                        <AdditionalClassInfo> <EntityClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.entityUpdating} entities={this.props.Chat.entities} updateEntity={this.props.updateEntities}/> </AdditionalClassInfo>
-                    </TabPanel>
-                    <TabPanel>
-                    another panel
-                    </TabPanel>
-                </Tabs>
+                <SentenceClass> <SentenceClassification sentenceInFocus={this.props.Chat.sentenceInFocus} /> </SentenceClass>
+                <AdditionalClassInfo> <IntentClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.intentUpdating} intents={this.props.Chat.intents} updateIntent={this.props.updateIntents}/> </AdditionalClassInfo>
+                <AdditionalClassInfo> <EntityClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.entityUpdating} entities={this.props.Chat.entities} updateEntity={this.props.updateEntities}/> </AdditionalClassInfo>
             </Container>
         );
     }
