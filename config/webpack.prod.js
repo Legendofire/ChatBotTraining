@@ -11,6 +11,9 @@ module.exports = merge(commonConfig, {
     },
 
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        }),
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 warnings: false,
@@ -19,9 +22,6 @@ module.exports = merge(commonConfig, {
             output: {
                 comments: false
             }
-        }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
         })
     ]
 });

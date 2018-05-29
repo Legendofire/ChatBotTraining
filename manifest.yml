@@ -5,6 +5,6 @@ applications:
   memory: 256M
   instances: 1
   domain: eu-gb.mybluemix.net
-  name: CIOChatBot
-  host: CIOChatBot
+  name: cibtraining
+  host: cibtraining
   disk_quota: 1024M

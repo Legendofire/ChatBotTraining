@@ -1,12 +1,17 @@
 export default function reducer(
     state = {
+        // chatLog: [{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: //false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: '', isOwn: false },{ text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum laudantium deserunt nemo omnis sed quis reprehenderit, porro quisquam, alias aliquid commodi at recusandae ex voluptas quas numquam ratione ut maxime temporibus, //hic? Iste voluptas aut illo, nobis deleniti debitis culpa.', isOwn: false }],
         chatLog: [],
         currentMsg: "",
         chatContext: null,
         sendingMsg: false,
+        choices: [],
         error: null,
-        chartData: [],
-        showChart: false
+        intents: null,
+        entities: null,
+        sentenceInFocus: "",
+        entityUpdating: false,
+        intentUpdating: false
     },
     action
 ) {
@@ -18,10 +23,14 @@ export default function reducer(
                 currentMsg: action.payload
             };
             break;
+        case "Update_Focused_Sentence":
+            return {
+                ...newState,
+                sentenceInFocus: action.payload.text
+            };
+            break;
         case "Send_Message":
-            if (state.chatContext) {
-                newState.chatLog.push({ text: state.currentMsg, isOwn: true });
-            }
+            newState.chatLog.push({ text: state.currentMsg, isOwn: true });
             return {
                 ...newState,
                 sendingMsg: true,
@@ -29,18 +38,18 @@ export default function reducer(
             };
             break;
         case "Message_Sent":
-            action.payload.response.forEach(msg => {
-                newState.chatLog.push({ text: msg, isOwn: false });
-            });
-            if (action.payload.chartData.length > 0) {
-                newState.showChart = true;
-                newState.chartData = action.payload.chartData;
+            newState.chatLog.push({ text: action.payload.response, map: !!action.payload.context.atm_location, isOwn: false });
+            newState.choices = [];
+            newState.choices = action.payload.context.choices ? action.payload.context.choices.split(',') : [];
+            action.payload.context.atm_location = null;
+            if (action.payload.context) {
+                action.payload.context.pc = true;
             }
+            newState.chatContext = action.payload.context;
             return {
                 ...newState,
                 currentMsg: "",
-                sendingMsg: false,
-                chatContext: action.payload.context
+                sendingMsg: false
             };
             break;
         case "Message_Sent_Err":
@@ -48,6 +57,56 @@ export default function reducer(
                 ...newState,
                 error: action.payload,
                 sendingMsg: false
+            };
+            break;
+        case "Update_Intents":
+            return {
+                ...newState,
+                intents: action.payload.data,
+                sendingMsg: false
+            };
+            break;
+        case "Update_Entities":
+            return {
+                ...newState,
+                entities: action.payload.data,
+                sendingMsg: false
+            };
+            break;
+        case "Entities_Updating":
+            return {
+                ...newState,
+                entityUpdating: true
+            };
+            break;
+        case "Entities_Updated":
+            return {
+                ...newState,
+                entityUpdating: false
+            };
+            break;
+        case "Intents_Updating":
+            return {
+                ...newState,
+                intentUpdating: true
+            };
+            break;
+        case "Intents_Updated":
+            return {
+                ...newState,
+                intentUpdating: false
+            };
+            break;
+        case "Intents_Updated_Err":
+            return {
+                ...newState,
+                intentUpdating: false
+            };
+            break;
+        case "Entities_Updated_Err":
+            return {
+                ...newState,
+                entityUpdating: false
             };
             break;
         default:

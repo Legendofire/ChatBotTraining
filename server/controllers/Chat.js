@@ -1,7 +1,6 @@
 const AssistantV1 = require('watson-developer-cloud/assistant/v1');
 
 const Credentials = require('../../config/config');
-const ChartsData = require('../models/ChartData');
 
 let wastonAssistant = new AssistantV1({
     version: "2018-02-16",
@@ -18,16 +17,78 @@ exports.sendMessage = function (req, res, next) {
         if (err) {
             next(err);
         } else {
-            console.log(response);
-            let chartData = [];
-            if (response.entities[0]) {
-                chartData = ChartsData.get(response.entities[0].entity);
-            }
             res.json({
                 response: response.output.text,
-                context: response.context,
-                chartData: chartData
+                context: response.context
             });
+        }
+    });
+};
+
+exports.getIntents = function (req, res, next) {
+    wastonAssistant.listIntents({
+        workspace_id: Credentials.WA_workspace_id,
+        export: true
+    }, (err, response) => {
+        if (err) {
+            next(err);
+        } else {
+            res.json(response);
+        }
+    });
+};
+
+exports.getEntities = function (req, res, next) {
+    wastonAssistant.listEntities({
+        workspace_id: Credentials.WA_workspace_id,
+        export: true
+    }, (err, response) => {
+        if (err) {
+            next(err);
+        } else {
+            res.json(response);
+        }
+    });
+};
+
+exports.updateIntents = function (req, res, next) {
+    wastonAssistant.createExample({
+        workspace_id: Credentials.WA_workspace_id,
+        intent: req.body.intent,
+        text: req.body.text
+    }, (err, response) => {
+        if (err) {
+            next(err);
+        } else {
+            res.json(response);
+        }
+    });
+};
+
+exports.updateEntities = function (req, res, next) {
+    wastonAssistant.createSynonym({
+        workspace_id: Credentials.WA_workspace_id,
+        entity: req.body.entity,
+        value: req.body.type,
+        synonym: req.body.value
+    }, (err, response) => {
+        if (err) {
+            next(err);
+        } else {
+            res.json(response);
+        }
+    });
+};
+
+exports.getLogs = function (req, res, next) {
+    wastonAssistant.listLogs({
+        workspace_id: Credentials.WA_workspace_id,
+        filter: `request.context.conversation_id::${req.body.conversation_id}`
+    }, (err, response) => {
+        if (err) {
+            next(err);
+        } else {
+            res.json(response);
         }
     });
 };

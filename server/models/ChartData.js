@@ -1,7 +1,7 @@
 let ChartData = new Map();
 
 //Transform
-ChartData.set("confirmation", [
+ChartData.set("transform_confirmation", [
     { name: 'Yes', value: 28 },
     { name: 'No', value: 72 }
 ]);
@@ -28,18 +28,28 @@ ChartData.set("role", [
     { name: 'Trusted Business Advisor', value: 12 }
 ]);
 
-//Technology
-ChartData.set("tech", [
-    { name: 'Mobile Technology', value: 66 },
-    { name: 'Cloud Computing', value: 45 },
-    { name: 'IOT', value: 38 },
-    { name: 'Robotics Process Automation', value: 17 },
-    { name: 'AI/Cognitive Computing', value: 66 },
-    { name: 'Virtual Reality', value: 14 },
-    { name: 'Augmented Reality', value: 13 },
-    { name: 'Physical Robots', value: 13 },
-    { name: '3D Printing', value: 10 },
-    { name: 'Blockchain', value: 8 }
+//Impact
+ChartData.set("impact", [
+    { name: 'Technology', value: 50 },
+    { name: 'Market Change', value: 14 },
+    { name: 'Inside the Organization', value: 5 },
+    { name: 'Competition', value: 31 }
+]);
+
+//Priorities
+ChartData.set("priorities", [
+    { name: 'Innovate for Competitveness', value: 50 },
+    { name: 'Meet Business Needs', value: 9 },
+    { name: 'Optimize Investment', value: 57 },
+    { name: 'Better Digital Experience', value: 12 }
+]);
+
+//Barriers
+ChartData.set("barriers", [
+    { name: 'Lack of Skills', value: 15 },
+    { name: 'Cyber Security Threats', value: 23 },
+    { name: 'Culture and People', value: 8 },
+    { name: 'Lack of Budget', value: 54 }
 ]);
 
 module.exports = ChartData;

@@ -4,7 +4,7 @@ import scrollIntoView from 'scroll-into-view-if-needed';
 // Loading Modules
 import ChatItem from '../Components/ChatItem';
 
-export default class ChatWindowView extends Component {
+class ChatWindowView extends Component {
     componentDidMount() {
         const node = document.getElementById('last-chat-element');
 
@@ -28,24 +28,22 @@ export default class ChatWindowView extends Component {
     render() {
         return (
             <Container>
-                {this.props.chatLog.map((msg, index) => {
-                    if (index === this.props.chatLog.length - 1) {
-                        return <ChatItem {...msg}/>;
-                    } else {
-                        return <ChatItem {...msg}/>;
-                    }
-                })}
+                {this.props.chatLog.map((msg, index) => (
+                    <ChatItem key={index} {...msg} updateSentence={() => this.props.updateFocusedSentence(msg)} />
+                ))}
                 <div id="last-chat-element" />
             </Container>
         );
     }
 }
 
+export default ChatWindowView;
+
 const Container = styled.div`
     width: 95%;
-    height: 90vh;
+    height: 88vh;
     padding: 10px;
-    box-sizing: border-box;
+    box-sizing: content-box;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;

@@ -6,36 +6,28 @@ import styled from 'styled-components';
 import ChatWindowView from './Containers/ChatWindowView';
 import ChatInput from './Components/ChatInput';
 // Importing Action Creators
-import { SendMessage, UpdateMsg } from './chatActions';
+import { SendMessage, UpdateMsg, UpdateFocusedSentence } from './chatActions';
 
 class ChatLayout extends Component {
-    componentDidMount() {
-        this.props.SendMessage('', this.props.Chat.chatContext);
-    }
+    // componentDidMount() {
+    //     this.props.SendMessage('', this.props.Chat.chatContext);
+    // }
+
     render() {
         return (
             <Container>
-                <ChatWindowView chatLog={this.props.Chat.chatLog} />
+                <ChatWindowView chatLog={this.props.Chat.chatLog} updateFocusedSentence={this.props.UpdateFocusedSentence}/>
                 <ChatInput
-                    onSendClick={() => this.props.SendMessage(this.props.Chat.currentMsg, this.props.Chat.chatContext)}
-                    onEnterClick={(e) => {
-                        return e.keyCode === 13 ?
-                            this.props.SendMessage(this.props.Chat.currentMsg, this.props.Chat.chatContext) : null;
-                    }}
+                    onSendClick={this.props.SendMessage}
                     msg={this.props.Chat.currentMsg}
-                    onMsgUpdate={(e) => this.props.UpdateMsg(e.target.value)}/>
+                    context={this.props.Chat.chatContext}
+                    onMsgUpdate={this.props.UpdateMsg}
+                    choices={this.props.Chat.choices}
+                />
             </Container>
         );
     }
 }
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-`;
 
 //export default ChatLayout;
 
@@ -48,8 +40,19 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         SendMessage: SendMessage,
-        UpdateMsg: UpdateMsg
+        UpdateMsg: UpdateMsg,
+        UpdateFocusedSentence: UpdateFocusedSentence
     }, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(ChatLayout);
+
+
+const Container = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
