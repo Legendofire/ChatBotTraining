@@ -3,9 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 // Loading Modules
+import TabContainer, { TabPanel } from './Containers/TabContainer';
 import SentenceClassification from './Components/InitialClassification';
 import EntityClassificationTool from './Components/EntityTool';
 import IntentClassificationTool from './Components/IntentsTool';
+import ChatLog from './Components/ChatLog';
 // Loading Actions
 import { updateIntents, updateEntities } from '../ChatLayout/chatActions';
 
@@ -14,9 +16,16 @@ class ChartContainer extends React.Component {
         return (
             <Container>
                 <Header> CIB ChatBot Training </Header>
-                <SentenceClass> <SentenceClassification sentenceInFocus={this.props.Chat.sentenceInFocus} /> </SentenceClass>
-                <AdditionalClassInfo> <IntentClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.intentUpdating} intents={this.props.Chat.intents} updateIntent={this.props.updateIntents}/> </AdditionalClassInfo>
-                <AdditionalClassInfo> <EntityClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.entityUpdating} entities={this.props.Chat.entities} updateEntity={this.props.updateEntities}/> </AdditionalClassInfo>
+                <TabContainer>
+                    <TabPanel>
+                        <SentenceClass> <SentenceClassification sentenceInFocus={this.props.Chat.sentenceInFocus} /> </SentenceClass>
+                        <AdditionalClassInfo> <IntentClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.intentUpdating} intents={this.props.Chat.intents} updateIntent={this.props.updateIntents}/> </AdditionalClassInfo>
+                        <AdditionalClassInfo> <EntityClassificationTool sentenceInFocus={this.props.Chat.sentenceInFocus} isUpdating={this.props.Chat.entityUpdating} entities={this.props.Chat.entities} updateEntity={this.props.updateEntities}/> </AdditionalClassInfo>
+                    </TabPanel>
+                    <TabPanel>
+                        <ChatLog/>
+                    </TabPanel>
+                </TabContainer>
             </Container>
         );
     }
@@ -40,7 +49,6 @@ export default connect(mapStateToProps, matchDispatchToProps)(ChartContainer);
 const Container = styled.div`
     width: 100%;
     height: 100%;
-    padding: 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -53,6 +61,7 @@ const Container = styled.div`
 const Header = styled.div`
     font-size: 3rem;
     margin-bottom: 10px;
+    padding: 10px;
 `;
 
 const SentenceClass = styled.div`

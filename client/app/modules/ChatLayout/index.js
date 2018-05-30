@@ -16,7 +16,7 @@ class ChatLayout extends Component {
     render() {
         return (
             <Container>
-                <ChatWindowView chatLog={this.props.Chat.chatLog} updateFocusedSentence={this.props.UpdateFocusedSentence}/>
+                <ChatWindowView chatLog={this.props.Chat.chatLog} height={88} updateFocusedSentence={this.props.UpdateFocusedSentence}/>
                 <ChatInput
                     onSendClick={this.props.SendMessage}
                     msg={this.props.Chat.currentMsg}

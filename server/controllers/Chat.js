@@ -17,8 +17,14 @@ exports.sendMessage = function (req, res, next) {
         if (err) {
             next(err);
         } else {
+            let responseMsg = [response.output.text];
+            response.intents.forEach((intent) => {
+                if (intent.intent === "referenceNumber") {
+                    responseMsg[0] = responseMsg[0] + response.context.conversation_id;
+                }
+            });
             res.json({
-                response: response.output.text,
+                response: responseMsg,
                 context: response.context
             });
         }
@@ -84,11 +90,23 @@ exports.getLogs = function (req, res, next) {
     wastonAssistant.listLogs({
         workspace_id: Credentials.WA_workspace_id,
         filter: `request.context.conversation_id::${req.body.conversation_id}`
+        //filter: `request.context.conversation_id::a14aa746-8668-4633-94a3-07617ac2cda1`
     }, (err, response) => {
         if (err) {
             next(err);
         } else {
-            res.json(response);
+            let chatLog = [];
+            response.logs.forEach((logItem) => {
+                chatLog.push({
+                    text: logItem.response.input.text,
+                    isOwn: true
+                });
+                chatLog.push({
+                    text: logItem.response.output.text,
+                    isOwn: false
+                });
+            });
+            res.json(chatLog);
         }
     });
 };

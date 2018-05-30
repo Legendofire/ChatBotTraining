@@ -8,6 +8,7 @@ export function SendMessage(msg, context) {
             message: msg,
             context: context
         }).then((response) => {
+            console.log(response);
             response.data.response.forEach((res) => {
                 console.log(response.data.context);
                 let temp = {
@@ -74,7 +75,6 @@ export function updateEntities(entity, text) {
 
 //Action without Thunk
 export function UpdateMsg(msg) {
-    
     return {
         type: "Update_Message",
         payload: msg
@@ -82,7 +82,6 @@ export function UpdateMsg(msg) {
 }
 
 export function UpdateFocusedSentence(msg) {
-    console.log(`focused on ${msg.text}`);
     return {
         type: "Update_Focused_Sentence",
         payload: msg

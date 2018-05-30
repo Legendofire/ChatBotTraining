@@ -27,7 +27,7 @@ class ChatWindowView extends Component {
 
     render() {
         return (
-            <Container>
+            <Container height={this.props.height}>
                 {this.props.chatLog.map((msg, index) => (
                     <ChatItem key={index} {...msg} updateSentence={() => this.props.updateFocusedSentence(msg)} />
                 ))}
@@ -41,7 +41,7 @@ export default ChatWindowView;
 
 const Container = styled.div`
     width: 95%;
-    height: 88vh;
+    height: ${props => props.height}vh;
     padding: 10px;
     box-sizing: content-box;
     display: flex;
